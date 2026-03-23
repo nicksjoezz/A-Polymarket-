@@ -38,18 +38,19 @@ class TradingEngine:
                 time.sleep(60)
 
     def scan_and_trade(self):
-        self.bot_state["logs"].append("Scanning markets and fetching news...")
+        self.bot_state["logs"].append("Scanning weather markets and fetching news...")
 
         # Update news events from data sources
         self.bot_state["news_events"] = self.news_client.get_weather_alerts()
 
-        markets_data = self.pm_client.get_markets()
+        # Use advanced discovery logic
+        markets_data = self.pm_client.get_weather_markets()
         if not markets_data:
             return
 
         self.bot_state["total_scanned"] = len(markets_data)
         self.bot_state["scanned_markets"] = [
-            {"id": m["id"], "question": m["question"], "volume": float(m.get("volume", 0)), "is_new": True}
+            {"id": m.get("id", m.get("conditionId")), "question": m.get("question", m.get("title")), "volume": float(m.get("volume24hr", 0)), "is_new": True}
             for m in markets_data
         ]
         self.socketio.emit('bot_status', self.bot_state)
