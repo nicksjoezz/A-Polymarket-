@@ -51,3 +51,11 @@ class WeatherClient:
         }
         response = requests.get(self.base_url, params=params)
         return response.json()
+
+class NewsClient:
+    def get_weather_alerts(self):
+        # In a real bot, we'd poll api.weather.gov or USGS
+        return [
+            {"source": "USGS", "location": "Miami", "type": "Flood", "conf": 0.88, "desc": "Gauge above flood stage"},
+            {"source": "NOAA", "location": "New York", "type": "Temperature", "conf": 0.95, "desc": "Record high forecast"}
+        ]

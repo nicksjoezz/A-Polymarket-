@@ -46,7 +46,30 @@ def load_state():
             "paper_balance": 1000.0,
             "max_trades": 10,
             "strategy": "Forecast Arbitrage"
+    },
+    "smart_wallets": {
+        "example_market_id": {
+            "direction": "YES",
+            "convergence_score": 0.85,
+            "traders": ["gopfan2", "neobrother"]
         }
+    },
+    "news_events": [
+        {
+            "location": "New York",
+            "type": "Temperature",
+            "desc": "Official forecast: High will be 43-45°F",
+            "source": "NOAA",
+            "conf": 0.95
+        },
+        {
+            "location": "Miami",
+            "type": "Flood",
+            "desc": "USGS gauge exceeding flood stage",
+            "source": "USGS",
+            "conf": 0.88
+        }
+    ]
     }
 
 def save_state():

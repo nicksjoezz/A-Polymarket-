@@ -1,7 +1,7 @@
 import time
 from datetime import datetime
 import threading
-from clients import PolymarketClient, WeatherClient
+from clients import PolymarketClient, WeatherClient, NewsClient
 from strategies import StrategyEngine
 
 class TradingEngine:
@@ -11,6 +11,7 @@ class TradingEngine:
         self.save_callback = save_callback
         self.pm_client = PolymarketClient(paper_mode=self.bot_state["config"]["paper_mode"])
         self.weather_client = WeatherClient()
+        self.news_client = NewsClient()
         self.strategy_engine = StrategyEngine(self.bot_state["config"])
         self.is_running = False
         self.thread = None
@@ -37,7 +38,11 @@ class TradingEngine:
                 time.sleep(60)
 
     def scan_and_trade(self):
-        self.bot_state["logs"].append("Scanning markets...")
+        self.bot_state["logs"].append("Scanning markets and fetching news...")
+
+        # Update news events from data sources
+        self.bot_state["news_events"] = self.news_client.get_weather_alerts()
+
         markets_data = self.pm_client.get_markets()
         if not markets_data:
             return
